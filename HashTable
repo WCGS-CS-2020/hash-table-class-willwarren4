@@ -62,7 +62,10 @@ public class Program
 				if (tempindex > tablesize)
 				{tempindex = 1;} //making sure the index will loop back round to the beginning the hash table
 				if (count > tablesize)
-				{Console.WriteLine("Your input cannot be placed in the hash table since it is full. Remove values from the hash table before adding to it.");}
+				{
+					Console.WriteLine("Your input cannot be placed in the hash table since it is full. Remove values from the hash table before adding to it.");
+					valueplaced = true;
+				}
 		   }
 		 }
 		}

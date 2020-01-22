@@ -8,7 +8,7 @@ public class Program
 		private int tablesize = 0;
 		private string tempinput; //stores inputs before they are added to hash table
 		private int tempindex; //stores index before they are added to hash table
-		private float fullfactor; //stores full factor
+		private double fullfactor; //stores full factor
 		
 		public void gettablesize()
 		{

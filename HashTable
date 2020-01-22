@@ -142,7 +142,7 @@ public class Program
 		 Console.WriteLine("'2' - to delete a value from the hash table");
 		 Console.WriteLine("'3' - to search for a value in the hash table");
 		 Console.WriteLine("'4' - to output all values within the hash table");
-	     Console.WriteLine("'5' - to get the full factor of the hash table");
+	         Console.WriteLine("'5' - to get the full factor of the hash table");
 		 Console.WriteLine("'6' - to exit the program");
 		
 		while (quitprogram == false)

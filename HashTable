@@ -1,0 +1,186 @@
+using System;
+					
+public class Program
+{
+	public class hashtable
+	{
+		private string[] array; //array that's used to store values like a hash table
+		private int tablesize = 0;
+		private string tempinput; //stores inputs before they are added to hash table
+		private int tempindex; //stores index before they are added to hash table
+		private float fullfactor; //stores full factor
+		
+		public void gettablesize()
+		{
+		  Console.WriteLine("Please enter the table size that you would like for your hash table:");
+		  tablesize = Int32.Parse(Console.ReadLine());
+		  array = new string[tablesize]; //making array size the table size that the user has given
+			
+			for (int i = 0; i < tablesize; i++) //making sure every value in the array is null
+			{
+				array[i] = "";
+			} 
+		}
+		
+		public void getindex(string input) //gets an index for the input
+		{
+			char firstletter = input[0]; //gets first letter of input
+			int ascii = (int)firstletter; //converts character to ascii value
+			
+			if (ascii < 10)
+			{
+				ascii = 10 + ascii;
+			}  //making sure ascii values is at least ten so when it squared it has at least three digits for hashing algorithm
+			
+			ascii = ascii * ascii;  //hashing algorithm: squares ascii value, takes the second and third number and puts them together
+			string other = "" + ascii;	
+			char[] chars = {other[1],other[2]};
+			other = new string(chars); //putting second and third number together
+		    int index = Int32.Parse(other); 
+			index = index % tablesize; //converting final number to an integer to be used as an index to add to array
+			
+			tempinput = input; //stores input in local variable for other functions
+			tempindex = index + 1;
+		}
+		
+		public void addtotable() //adds value to table after getting index from getindex() //tempinput/index holds input/index entered from getindex()
+		{ 
+		 bool valueplaced = false; //becomes true when the input has been placed within the hash table
+		 int count = 0;
+		 while (valueplaced == false)
+		 {
+		  if (array[tempindex - 1] == "" || array[tempindex-1] == "deleted")//if space is empty
+		   {
+			array[tempindex - 1] = tempinput; //stores input at wanted index if it's empty
+			  valueplaced = true;
+			Console.WriteLine("Your value has been added to the hash table.");
+		   }
+			else
+		   {
+			tempindex++; //add to index if there is a collision to check next space
+				count++;
+				if (tempindex > tablesize)
+				{tempindex = 1;} //making sure the index will loop back round to the beginning the hash table
+				if (count > tablesize)
+				{Console.WriteLine("Your input cannot be placed in the hash table since it is full. Remove values from the hash table before adding to it.");}
+		   }
+		 }
+		}
+		
+		public void searchtable(string input) //searches for value in hash table
+		{
+		 getindex(input); //gets index and stores in tempindex
+		 bool valuefound = false;
+		 int count = 0;
+		 while (valuefound == false)
+		 {
+		  if (array[tempindex - 1] == input)
+		  {
+			Console.WriteLine("The value is at index " + tempindex + " in the array");
+			valuefound = true;
+		  }
+		  else if (array[tempindex - 1] == "" || count > tablesize)
+		  {
+			Console.WriteLine("The value is not stored within the hash table.");
+			valuefound = true;
+		  }
+		  else
+		  {
+			tempindex++;
+			count++;
+		  }
+		 }
+		}
+		
+		public void deletevalue(int index) //deletes value from hash table without leavinf index empty
+		{
+			array[index - 1] = "deleted";
+		}
+		
+		public void showtable() //outputs all the values within the table
+		{
+		int outputindex = 1;
+			
+			while (outputindex < tablesize + 1)
+			{
+			Console.WriteLine(outputindex + ": " + array[outputindex - 1]);
+			outputindex++;
+			}
+		}
+		
+		public void getfullfactor()
+		{
+		  int totalvalues = 0;
+		  for (int i = 0; i < tablesize; i++)
+		  {
+			if (array[i] != "" & array[i] != "deleted")
+			{
+			totalvalues++;
+			}
+		  }
+		  fullfactor = totalvalues / tablesize;
+		  Console.WriteLine("The current full factor of the hash table is " + fullfactor);
+		}
+	}
+	
+	public static void Main()
+	{
+		hashtable hashtable = new hashtable(); //constructor to make hash table
+		string input;
+		string value;
+		int index;
+		bool quitprogram = false;
+		
+        Console.WriteLine("Hash Table -");
+	    hashtable.gettablesize();
+		
+		 Console.WriteLine("Input one of the following:");
+		 Console.WriteLine("'1' - to add a value to the hash table");
+		 Console.WriteLine("'2' - to delete a value from the hash table");
+		 Console.WriteLine("'3' - to search for a value in the hash table");
+		 Console.WriteLine("'4' - to output all values within the hash table");
+	     Console.WriteLine("'5' - to get the full factor of the hash table");
+		 Console.WriteLine("'6' - to exit the program");
+		
+		while (quitprogram == false)
+		{
+			
+		input = Console.ReadLine();
+			
+		 switch (input)
+		 {
+			case "1":
+			Console.WriteLine("Please enter the value you would like to add to the hash table:");
+			value = Console.ReadLine();
+			hashtable.getindex(value);
+			hashtable.addtotable();
+		    break;
+				 
+			case "2":
+			Console.WriteLine("Please input the index of the value you would like to remove from the hash table:");
+			index = Int32.Parse(Console.ReadLine());
+			hashtable.deletevalue(index);
+		    break;
+				 
+			case "3":
+			Console.WriteLine("Please enter the value you would like to search for in the hash table");
+			value = Console.ReadLine();
+			hashtable.searchtable(value);	 
+			break;
+				 
+			case "4":
+			hashtable.showtable();	 
+			break;
+				 
+			case "5":
+			hashtable.getfullfactor();	 
+			break;
+				 
+			case "6":
+			  Console.WriteLine("You have now exited the program.");
+			  quitprogram = true;
+			break;
+		 }
+		}
+	}
+}
